@@ -1,0 +1,35 @@
+== Email Finder
+
+Provide an array of first/last name pairs and a domain name. Email Finder
+will run a series of Google queries looking for email addresses for that domain
+and will make it's best guess at what each person's email address is (based on the patterns
+of the email addresses returned from the search results).
+
+== Install
+
+Command-line
+
+    => gem install email_finder
+
+Gemfile
+
+    gem 'email_finder'
+
+== Examples
+
+    => e = EmailFinder::Search.new(['jim','jones'], 'aantix.com').search
+    => e.employees
+    => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">]
+
+    => e = EmailFinder::Search.new([['jim','jones'],['renee',jones']], 'aantix.com').search
+    => e.employees
+    => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">, #<EmailFinder::Employee:0x007f8eba4a2d38 @first_name="renee", @last_name="jones", @domain="aantix.com", @variants=["renee", "jones", "rj", "renee_jones", "r_jones", "reneejones", "renee.jones", "reneej", "rjones", "renee.j", "r.jones", "jones.renee", "jonesr"], @score=0, @probable_email="rjones">]
+
+    => e = EmailFinder::Search.new(['jim','jones','renee','jones'], 'aantix.com').search
+    => e.employees
+    => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">, #<EmailFinder::Employee:0x007f8eba4a2d38 @first_name="renee", @last_name="jones", @domain="aantix.com", @variants=["renee", "jones", "rj", "renee_jones", "r_jones", "reneejones", "renee.jones", "reneej", "rjones", "renee.j", "r.jones", "jones.renee", "jonesr"], @score=0, @probable_email="rjones">]
+
+
+== Copyright
+
+Copyright (c) 2016 Jim Jones. See LICENSE for details.
