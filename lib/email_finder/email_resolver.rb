@@ -41,39 +41,40 @@ module EmailFinder
       @domain = domain
     end
 
-
     # Returns an index to the email pattern that is followed by the email samples
     #  found in the Google searches.
     def pattern_index
       results = ::Google::Search::Web.new(query: query)
 
       results.each do |result|
-        email = email_match(result)
+        match = email_match(result)
 
-        if email
-          email = email[0]
+        if match
+          email = match[0]
           unless filtered?(email)
             username, _domain = email.split('@')
 
             resolver = EmailPatternResolver.new(username)
-            resolved_username = EmailPatterResolver.name_for SAMPLE_FIRST_NAME, SAMPLE_LAST_NAME, resolver.pattern
+            resolved_username = EmailPatterResolver.name_for(SAMPLE_FIRST_NAME, SAMPLE_LAST_NAME, resolver.pattern)
 
             employee = Employee.new(SAMPLE_FIRST_NAME, SAMPLE_LAST_NAME, SAMPLE_DOMAIN)
 
-            return employee.pattern_index_for resolved_username
+            return employee.pattern_index_for(resolved_username)
           end
         end
       end
+
+      nil
     end
 
     private
 
     def filtered?(email)
-      BLACKLISTED_EMAILS.any?{|e| email =~ /#{e}/}
+      BLACKLISTED_EMAILS.any?{|e| email =~ /#{e}/i}
     end
 
     def email_match(search_result)
-      /\b\w+#{domain}\b/i.match(search_result.content)
+      /\b\w+@#{domain}\b/i.match(search_result.content)
     end
 
     def query
