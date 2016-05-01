@@ -1,4 +1,5 @@
 require 'email_finder/employee'
+require 'email_finder/email_resolver'
 
 module EmailFinder
   class Search
@@ -18,7 +19,7 @@ module EmailFinder
           retries = 0
           begin
             employee.search
-          rescue Net::TimeOut
+          rescue Exception
             retries+=1
             retry if retries <= MAX_RETRIES
             next
@@ -28,12 +29,25 @@ module EmailFinder
       end.compact
 
       # Find the most reoccurring email pattern across employees
-      resolve_unfound_emails(@employees)
+      unless resolve_unfound_emails(@employees)
+        # If we didn't find an email pattern from one of the employees
+        # go find examples across Google for the domain
+        #  and figure out the pattern from that
+        resolve_by_search_sampling
+      end
 
       self
     end
 
+    def email_for(first_name, last_name)
+      employees.find do |e|
+        e.first_name == first_name &&
+          e.last_name == last_name
+      end
+    end
+
     private
+
     def resolve_unfound_emails(employees)
       return nil if employees.empty?
       return nil if employees.all? {|e| e.score.nil?}
@@ -48,6 +62,19 @@ module EmailFinder
 
         employee.probable_email = employee.email_for(top_score.pattern_index)
       end
+      self
+    end
+
+    def resolve_by_search_sampling
+      resolver = EmailResolver.new(domain)
+      pattern_index = resolver.pattern_index
+      return unless pattern_index
+
+      employees.each do |employee|
+        employee.email = employee.email_for pattern_index
+      end
+
+      self
     end
 
     def top_employee(employees)

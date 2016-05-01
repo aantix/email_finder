@@ -1,7 +1,10 @@
 require 'google-search'
+require 'email_finder/email_variants'
 
 module EmailFinder
   class Employee
+    include EmailVariants
+
     MAX_SEARCH_VARIANTS = 4
 
     attr_reader :first_name, :last_name
@@ -12,7 +15,7 @@ module EmailFinder
       @first_name = first_name.downcase
       @last_name  = last_name.downcase
       @domain     = domain.gsub('www.', '')
-      @variants   = email_variants
+      @variants   = email_variants(@first_name, @last_name)
       @score      = nil
     end
 
@@ -33,11 +36,15 @@ module EmailFinder
 
     def pattern_index
       return nil unless probable_email
-      email_variants.index(probable_email)
+      pattern_index_for probable_email
+    end
+
+    def pattern_index_for email
+      variants.index(email)
     end
 
     def email_for(index)
-      email_variants[index]
+      variants[index]
     end
 
     private
@@ -57,27 +64,6 @@ module EmailFinder
 
     def summary_scan_for_email(emails, search_result)
       emails.find { |email| search_result.content =~ /\b#{full_email(email, domain)}\b/i }
-    end
-
-    def email_variants
-      first_initial = first_name[0]
-      last_initial  = last_name[0]
-
-      [
-          first_name,
-          last_name,
-          "#{first_initial}#{last_initial}", # ns
-          "#{first_name}_#{last_name}", # neal_shyam
-          "#{first_initial}_#{last_name}", # n_shyam_
-          "#{first_name}#{last_name}", # nealshyam
-          "#{first_name}.#{last_name}", # neal.shyam
-          "#{first_name}#{last_initial}", # neals
-          "#{first_initial}#{last_name}", # nshyam
-          "#{first_name}.#{last_initial}", # neal.s
-          "#{first_initial}.#{last_name}", # n.shyam
-          "#{last_name}.#{first_name}", # shyam.neal
-          "#{last_name}#{first_initial}" # shyamn
-      ]
     end
   end
 end
