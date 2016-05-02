@@ -6,7 +6,7 @@ describe EmailFinder::EmailResolver do
 
   context "pattern_index" do
     it 'returns the index of the matching email patter' do
-      expect(subject.pattern_index).to eq 6 # dfryer
+      expect(subject.pattern_index).to eq 8 # dfryer
     end
   end
 end

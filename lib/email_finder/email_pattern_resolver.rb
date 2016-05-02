@@ -1,7 +1,9 @@
 require 'erb'
+require 'email_finder/utils'
 
 module EmailFinder
   class EmailPatternResolver
+    include Utils
     attr_reader :username
 
     FIRST_NAMES = "data/first_names.txt"
@@ -57,10 +59,6 @@ module EmailFinder
 
     def last_names
       @last_names||=read_names(LAST_NAMES, 5)
-    end
-
-    def root
-      File.dirname __dir__
     end
 
     def find_name(username, names)

@@ -40,7 +40,7 @@ module EmailFinder
     end
 
     def pattern_index_for email
-      variants.index(email)
+      variants.index(email.downcase)
     end
 
     def email_for(index)

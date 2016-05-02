@@ -1,8 +1,10 @@
 require 'google-search'
 require 'email_finder/email_pattern_resolver'
+require 'email_finder/utils'
 
 module EmailFinder
   class EmailResolver
+    include Utils
     attr_reader :domain
 
     SAMPLE_FIRST_NAME     = 'SAMPLE'
@@ -47,17 +49,21 @@ module EmailFinder
       results = ::Google::Search::Web.new(query: query)
 
       results.each do |result|
-        match = email_match(result)
+        email = email_match(strip_html(result.content))
 
-        if match
-          email = match[0]
-          unless filtered?(email)
-            username, _domain = email.split('@')
+        if email
+          username, _domain = email.split('@')
 
-            resolver = EmailPatternResolver.new(username)
-            resolved_username = EmailPatterResolver.name_for(SAMPLE_FIRST_NAME, SAMPLE_LAST_NAME, resolver.pattern)
+          resolver = EmailPatternResolver.new(username)
+          pattern  = resolver.pattern
 
-            employee = Employee.new(SAMPLE_FIRST_NAME, SAMPLE_LAST_NAME, SAMPLE_DOMAIN)
+          if pattern
+            resolved_username = EmailPatternResolver.name_for(SAMPLE_FIRST_NAME,
+                                                              SAMPLE_LAST_NAME,
+                                                              pattern)
+            employee = Employee.new(SAMPLE_FIRST_NAME,
+                                    SAMPLE_LAST_NAME,
+                                    SAMPLE_DOMAIN)
 
             return employee.pattern_index_for(resolved_username)
           end
@@ -73,8 +79,10 @@ module EmailFinder
       BLACKLISTED_EMAILS.any?{|e| email =~ /#{e}/i}
     end
 
-    def email_match(search_result)
-      /\b\w+@#{domain}\b/i.match(search_result.content)
+    def email_match(content)
+      matches = content.scan(/\b\w+@#{domain}\b/i)
+
+      matches.find {|m| filtered?(m) == false}
     end
 
     def query
