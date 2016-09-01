@@ -9,6 +9,7 @@ PATH
   remote: .
   specs:
     email_finder (0.1.0)
+      distributed_search (~> 0.1.0)
 
 GEM
   remote: https://rubygems.org/
