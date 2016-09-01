@@ -1,6 +1,6 @@
 GIT
   remote: https://817a90a552f2b4abfacd491bee2943b44d1c6be6:x-oauth-basic@github.com/aantix/distributed_search.git
-  revision: 1a6273589d27cc50b4d7be57282bfea706e4cfda
+  revision: 325ead5185bbc1364755287d815ed0be9880fba6
   branch: master
   specs:
     distributed_search (0.1.0)
@@ -9,6 +9,7 @@ PATH
   remote: .
   specs:
     email_finder (0.1.0)
+      bundler
       distributed_search (~> 0.1.0)
 
 GEM

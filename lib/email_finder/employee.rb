@@ -15,13 +15,14 @@ module EmailFinder
       @last_name  = last_name.downcase
       @domain     = domain.gsub('www.', '')
       @variants   = email_variants(@first_name, @last_name)
-      ::DistributedSearch::DistributedSearch.new
       @score      = nil
     end
 
     def search
       variant_counts = Hash.new(0)
 
+      # Search for MAX_SEARCH_VARIANTS variants and see if they
+      #  exist out on the web.
       variants.each_slice(MAX_SEARCH_VARIANTS) do |emails|
         results = ::DistributedSearch::DistributedSearch.new.search(query(emails))
 
