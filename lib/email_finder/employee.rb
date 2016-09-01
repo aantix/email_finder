@@ -1,4 +1,3 @@
-require 'google-search'
 require 'email_finder/email_variants'
 
 module EmailFinder
