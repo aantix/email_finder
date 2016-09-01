@@ -1,4 +1,3 @@
-require 'distributed_search/distributed_search'
 require 'email_finder/email_variants'
 
 module EmailFinder
@@ -16,6 +15,7 @@ module EmailFinder
       @last_name  = last_name.downcase
       @domain     = domain.gsub('www.', '')
       @variants   = email_variants(@first_name, @last_name)
+      ::DistributedSearch::DistributedSearch.new
       @score      = nil
     end
 
