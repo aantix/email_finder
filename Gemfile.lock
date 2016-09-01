@@ -1,6 +1,7 @@
 GIT
   remote: https://817a90a552f2b4abfacd491bee2943b44d1c6be6:x-oauth-basic@github.com/aantix/distributed_search.git
   revision: b8f1346b923f13c7c455cc81b9fa1e8745201e86
+  branch: master
   specs:
     distributed_search (0.1.0)
 

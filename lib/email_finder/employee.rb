@@ -1,3 +1,4 @@
+require 'distributed_search/distributed_search'
 require 'email_finder/email_variants'
 
 module EmailFinder
