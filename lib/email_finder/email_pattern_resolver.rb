@@ -44,6 +44,14 @@ module EmailFinder
       ERB.new(template).result(binding)
     end
 
+    def first_name?
+      find_name(username, first_names).present?
+    end
+
+    def last_name?
+      find_name(username, last_names).present?
+    end
+
     private
 
     def read_names(filename, min)

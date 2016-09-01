@@ -1,0 +1,54 @@
+GIT
+  remote: https://817a90a552f2b4abfacd491bee2943b44d1c6be6:x-oauth-basic@github.com/aantix/distributed_search.git
+  revision: b8f1346b923f13c7c455cc81b9fa1e8745201e86
+  specs:
+    distributed_search (0.1.0)
+
+PATH
+  remote: .
+  specs:
+    email_finder (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.4.0)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
+    diff-lcs (1.2.5)
+    hashdiff (0.3.0)
+    rake (10.5.0)
+    rspec (3.4.0)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
+    rspec-core (3.4.4)
+      rspec-support (~> 3.4.0)
+    rspec-expectations (3.4.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-mocks (3.4.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-support (3.4.1)
+    safe_yaml (1.0.4)
+    vcr (3.0.1)
+    webmock (2.0.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.11)
+  distributed_search!
+  email_finder!
+  rake (~> 10.0)
+  rspec (~> 3.0)
+  vcr
+  webmock
+
+BUNDLED WITH
+   1.12.5

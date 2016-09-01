@@ -41,8 +41,8 @@ module EmailFinder
 
     def email_for(first_name, last_name)
       employees.find do |e|
-        e.first_name == first_name &&
-          e.last_name == last_name
+        e.first_name == first_name.downcase &&
+          e.last_name == last_name.downcase
       end
     end
 
@@ -78,7 +78,7 @@ module EmailFinder
     end
 
     def top_employee(employees)
-      employees.max_by(&:score)
+      employees.find_all{|e| !e.score.nil?}.max_by(&:score)
     end
   end
 

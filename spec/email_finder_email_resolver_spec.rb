@@ -5,8 +5,10 @@ describe EmailFinder::EmailResolver do
   let!(:subject){EmailFinder::EmailResolver.new(domain)}
 
   context "pattern_index" do
-    it 'returns the index of the matching email patter' do
-      expect(subject.pattern_index).to eq 8 # dfryer
+    it 'returns the index of the matching email pattern' do
+      VCR.use_cassette("pattern_index") do
+        expect(subject.pattern_index).to eq 8 # dfryer
+      end
     end
   end
 end

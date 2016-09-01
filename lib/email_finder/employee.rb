@@ -23,10 +23,10 @@ module EmailFinder
       variant_counts = Hash.new(0)
 
       variants.each_slice(MAX_SEARCH_VARIANTS) do |emails|
-        results = ::Google::Search::Web.new(query: query(emails))
+        results = ::DistributedSearch::DistributedSearch.new.search(query(emails))
 
-        results.each do |search_result|
-          found_email = summary_scan_for_email(emails, search_result)
+        results['results'].each do |search_result|
+          found_email = summary_scan_for_email(emails, search_result['content'])
           variant_counts[found_email]+=1 if found_email
         end
       end
@@ -62,8 +62,8 @@ module EmailFinder
       emails.collect{|email| "\"#{full_email(email, domain)}\""}.join(" OR ")
     end
 
-    def summary_scan_for_email(emails, search_result)
-      emails.find { |email| search_result.content =~ /\b#{full_email(email, domain)}\b/i }
+    def summary_scan_for_email(emails, content)
+      emails.find { |email| content =~ /\b#{full_email(email, domain)}\b/i }
     end
   end
 end
