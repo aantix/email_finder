@@ -5,6 +5,7 @@ module EmailFinder
     include EmailVariants
 
     MAX_SEARCH_VARIANTS = 4
+    BLACKLISTED_SITES   = ['lead411.com']
 
     attr_reader :first_name, :last_name
     attr_reader :domain, :email_variations, :score
@@ -44,8 +45,11 @@ module EmailFinder
       email_variations.index(email.downcase)
     end
 
-    def email_for(index)
-      email_variations[index]
+    # Accepts either an actual index or email pattern for lookup
+    def email_for(item)
+      return email_variations[item] if item.is_a? Integer
+
+      email_variations[pattern_variants.index(item)]
     end
 
     def email_pattern
@@ -69,7 +73,8 @@ module EmailFinder
     end
 
     def query(emails)
-      emails.collect{|email| "\"#{full_email(email, domain)}\""}.join(" OR ")
+      emails.collect{|email| "\"#{full_email(email, domain)}\""}.join(' OR ').
+          concat(BLACKLISTED_SITES.collect{|s| " -site:#{s}"}.join(' '))
     end
 
     def summary_scan_for_email(emails, content)
