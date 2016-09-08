@@ -17,14 +17,13 @@ Gemfile
     => e.employees
     => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">]
 
-    => e = EmailFinder::Search.new([['jim','jones'],['renee',jones']], 'aantix.com').search
-    => e.employees
-    => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">, #<EmailFinder::Employee:0x007f8eba4a2d38 @first_name="renee", @last_name="jones", @domain="aantix.com", @variants=["renee", "jones", "rj", "renee_jones", "r_jones", "reneejones", "renee.jones", "reneej", "rjones", "renee.j", "r.jones", "jones.renee", "jonesr"], @score=0, @probable_email="rjones">]
-
     => e = EmailFinder::Search.new(['jim','jones','renee','jones'], 'aantix.com').search
     => e.employees
     => [#<EmailFinder::Employee:0x007f8eba5aa870 @first_name="jim", @last_name="jones", @domain="aantix.com", @variants=["jim", "jones", "jj", "jim_jones", "j_jones", "jimjones", "jim.jones", "jimj", "jjones", "jim.j", "j.jones", "jones.jim", "jonesj"], @score=1, @probable_email="jjones">, #<EmailFinder::Employee:0x007f8eba4a2d38 @first_name="renee", @last_name="jones", @domain="aantix.com", @variants=["renee", "jones", "rj", "renee_jones", "r_jones", "reneejones", "renee.jones", "reneej", "rjones", "renee.j", "r.jones", "jones.renee", "jonesr"], @score=0, @probable_email="rjones">]
-
+    => e.employees.first.probable_email
+    => "jjones"
+    => e.employees.first.email_pattern
+    => "FirstinitialLastname"
 
 == Copyright
 
