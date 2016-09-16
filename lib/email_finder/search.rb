@@ -71,7 +71,7 @@ module EmailFinder
       return unless pattern_index
 
       employees.each do |employee|
-        employee.email = employee.email_for pattern_index
+        employee.probable_email = employee.email_for pattern_index
       end
 
       self
